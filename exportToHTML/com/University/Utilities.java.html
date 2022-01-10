@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>Utilities.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Utilities.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.University</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Scanner</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.regex.Pattern</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Utilities {</span>
+
+    <span class="s1">Scanner scanner = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">String usernameReceiver(ArrayList target</span><span class="s0">, </span><span class="s1">String tag){</span>
+        <span class="s1">System.out.print(tag + </span><span class="s2">&quot;: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Scanner scanner = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span>
+        <span class="s1">String input = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">String output = </span><span class="s0">null;</span>
+        <span class="s0">while</span><span class="s1">(</span><span class="s0">true</span><span class="s1">){</span>
+            <span class="s0">if</span><span class="s1">(checkExistence(target</span><span class="s0">,</span><span class="s1">input)){</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;This &quot; </span><span class="s1">+ tag + </span><span class="s2">&quot; Already Exists! Try another one: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">usernameReceiver(target</span><span class="s0">,</span><span class="s1">tag)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">output = input</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">break;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">output</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">checkExistence(ArrayList&lt;Person&gt; target</span><span class="s0">,</span><span class="s1">String username){</span>
+        <span class="s0">boolean </span><span class="s1">flag = </span><span class="s0">false;</span>
+        <span class="s0">for </span><span class="s1">(Person person : target) {</span>
+                <span class="s0">if </span><span class="s1">(person.getUsername().equals(username)) {</span>
+                    <span class="s1">flag = </span><span class="s0">true;</span>
+                    <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">flag</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String regexAdder(String regex</span><span class="s0">,</span><span class="s1">String tag){</span>
+        <span class="s1">System.out.print(tag + </span><span class="s2">&quot;: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Scanner scanner = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span>
+        <span class="s1">String output = </span><span class="s0">null;</span>
+        <span class="s1">String input = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s0">while</span><span class="s1">(</span><span class="s0">true</span><span class="s1">){</span>
+            <span class="s0">if</span><span class="s1">(checkRegex(input</span><span class="s0">,</span><span class="s1">regex)){</span>
+                <span class="s1">output = input</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">else</span><span class="s1">{</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong &quot; </span><span class="s1">+ tag + </span><span class="s2">&quot; Format. Enter a Correct &quot; </span><span class="s1">+ tag + </span><span class="s2">&quot; Format:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">regexAdder(regex</span><span class="s0">,</span><span class="s1">tag)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s0">break;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">output</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public boolean </span><span class="s1">checkRegex(String input</span><span class="s0">, </span><span class="s1">String regexPattern){</span>
+        <span class="s0">return </span><span class="s1">Pattern.compile(regexPattern).matcher(input).matches()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public int </span><span class="s1">intReceiver(){</span>
+        <span class="s0">try</span><span class="s1">{</span>
+            <span class="s0">int </span><span class="s1">output = Integer.parseInt(scanner.nextLine())</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">output</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">catch </span><span class="s1">(NumberFormatException e) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;You should enter a number here:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">intReceiver()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s3">0</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public </span><span class="s1">Double doubleReceiver(){</span>
+        <span class="s0">try</span><span class="s1">{</span>
+            <span class="s0">double </span><span class="s1">output = Double.parseDouble(scanner.nextLine())</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">output</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">catch </span><span class="s1">(NumberFormatException e) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;You should enter a number here:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">doubleReceiver()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s3">0.0</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">void </span><span class="s1">printRed(String input){</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;------------------------------</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+ ANSI_RED + input + ANSI_RESET + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">------------------------------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">void </span><span class="s1">printGreen(String input){</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;------------------------------</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+ ANSI_GREEN + input + ANSI_RESET + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">------------------------------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s0">public void </span><span class="s1">printYellow(String input){</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;------------------------------</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+ ANSI_YELLOW + input + ANSI_RESET + </span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">------------------------------&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private final </span><span class="s1">String ANSI_RESET = </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[0m&quot;</span><span class="s0">;</span>
+    <span class="s0">private final </span><span class="s1">String ANSI_RED = </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[31m&quot;</span><span class="s0">;</span>
+    <span class="s0">private final </span><span class="s1">String ANSI_GREEN = </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[32m&quot;</span><span class="s0">;</span>
+    <span class="s0">private final </span><span class="s1">String ANSI_YELLOW = </span><span class="s2">&quot;</span><span class="s0">\u001B</span><span class="s2">[33m&quot;</span><span class="s0">;</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

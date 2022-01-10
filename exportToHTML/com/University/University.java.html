@@ -1,0 +1,839 @@
+<html>
+<head>
+<title>University.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+University.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.University</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Locale</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Scanner</span><span class="s0">;</span>
+
+<span class="s0">import static </span><span class="s1">java.util.Objects.isNull</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">University {</span>
+    <span class="s1">Scanner scanner = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span>
+    <span class="s1">Utilities utils = </span><span class="s0">new </span><span class="s1">Utilities()</span><span class="s0">;</span>
+
+    <span class="s0">private final </span><span class="s1">ArrayList&lt;Student&gt; studentList</span><span class="s0">;</span>
+    <span class="s0">private final </span><span class="s1">ArrayList&lt;Employee&gt; employeeList</span><span class="s0">;</span>
+    <span class="s0">private final </span><span class="s1">ArrayList&lt;Professor&gt; professorList</span><span class="s0">;</span>
+    <span class="s0">private final </span><span class="s1">ArrayList&lt;Class&gt; classList</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">University() {</span>
+        <span class="s0">this</span><span class="s1">.studentList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.employeeList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.professorList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.classList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">loginRole() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                    Roles in the app include: 
+                    1-Employee 
+                    2-Professor 
+                    3-Student 
+                    Enter the role you want to login as or enter 0 to exit:</span><span class="s0">\s</span><span class="s2">&quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">String opt = scanner.nextLine()</span><span class="s0">;</span>
+            <span class="s0">switch </span><span class="s1">(opt) {</span>
+                <span class="s0">case </span><span class="s2">&quot;1&quot; </span><span class="s1">-&gt; {</span>
+                    <span class="s1">login(employeeList)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">case </span><span class="s2">&quot;2&quot; </span><span class="s1">-&gt; {</span>
+                    <span class="s1">login(professorList)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">case </span><span class="s2">&quot;3&quot; </span><span class="s1">-&gt; {</span>
+                    <span class="s1">login(studentList)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">case </span><span class="s2">&quot;0&quot; </span><span class="s1">-&gt; Main.entry()</span><span class="s0">;</span>
+                <span class="s0">default </span><span class="s1">-&gt; {</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;Try a number between 1-3&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">login(ArrayList list) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;Enter Username: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String username = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;Enter Password: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String password = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s0">if </span><span class="s1">(authenticate(username</span><span class="s0">, </span><span class="s1">password</span><span class="s0">, </span><span class="s1">list)) {</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Welcome to the uni&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Object obj = list.get(</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(obj </span><span class="s0">instanceof </span><span class="s1">Employee) {</span>
+                    <span class="s1">System.out.print(</span><span class="s2">&quot; Employee!</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">800</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">employeeSection(username)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(obj </span><span class="s0">instanceof </span><span class="s1">Professor) {</span>
+                    <span class="s1">System.out.print(</span><span class="s2">&quot; Professor!</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">800</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">professorSection(username)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else if </span><span class="s1">(obj </span><span class="s0">instanceof </span><span class="s1">Student) {</span>
+                    <span class="s1">System.out.print(</span><span class="s2">&quot; Student!</span><span class="s0">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">800</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">studentSection(username)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong username/password. You'll be redirected to choosing role section.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">loginRole()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(NullPointerException e) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Empty User/Pass fields not accepted!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">loginRole()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//===============================START OF EMPLOYEE SECTION===============================</span>
+    <span class="s0">private void </span><span class="s1">employeeSection(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                    Your Options: 
+                    1-Create User or Course 
+                    2-Edit User or Course 
+                    3-Delete User or Course 
+                    4-Check Salary 
+                    0-Exit 
+                    &quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">String opt = scanner.nextLine()</span><span class="s0">;</span>
+            <span class="s0">switch </span><span class="s1">(opt) {</span>
+                <span class="s0">case </span><span class="s2">&quot;1&quot;</span><span class="s1">:</span>
+                    <span class="s1">createSection()</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;2&quot;</span><span class="s1">:</span>
+                    <span class="s1">editSection()</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;3&quot;</span><span class="s1">:</span>
+                    <span class="s1">deleteSection()</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;4&quot;</span><span class="s1">:</span>
+                    <span class="s1">System.out.println(employeeSalary(username))</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;0&quot;</span><span class="s1">:</span>
+                    <span class="s0">return;</span>
+                <span class="s0">default</span><span class="s1">:</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong input,try 1,2,0: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">createSection() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                What do you want to create?: 
+                1-Employee 2-Professor 3-Student 4-Course 0-Exit 
+                &quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String objToCreate = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(objToCreate) {</span>
+            <span class="s0">case </span><span class="s2">&quot;1&quot;</span><span class="s1">:</span>
+                <span class="s1">addEmployee()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;2&quot;</span><span class="s1">:</span>
+                <span class="s1">addProfessor()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;3&quot;</span><span class="s1">:</span>
+                <span class="s1">addStudent()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;4&quot;</span><span class="s1">:</span>
+                <span class="s1">addClass()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;0&quot;</span><span class="s1">:</span>
+                <span class="s0">return;</span>
+            <span class="s0">default</span><span class="s1">:</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong option!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">String employeeSalary(String username) {</span>
+        <span class="s0">for </span><span class="s1">(Employee employee : employeeList) {</span>
+            <span class="s0">if </span><span class="s1">(employee.getUsername().equals(username)) {</span>
+                <span class="s0">return </span><span class="s2">&quot;Your salary is: &quot; </span><span class="s1">+ employee.getSalary()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s2">&quot;&quot;</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//Add by employee section</span>
+    <span class="s0">private void </span><span class="s1">addEmployee() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Enter Fullname:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String fullName = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;National Code:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">nationalCode = nationalCodeReceiver(employeeList)</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Salary: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">salary = utils.intReceiver()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Username for the new Account: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String employeeUsername = usernameReceiver(employeeList)</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Password for the new Account: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String password = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">Employee employee = </span><span class="s0">new </span><span class="s1">Employee(fullName</span><span class="s0">, </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">salary</span><span class="s0">, </span><span class="s1">employeeUsername</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+        <span class="s1">employeeList.add(employee)</span><span class="s0">;</span>
+        <span class="s1">objectAddedMessage(</span><span class="s2">&quot;Employee&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">addProfessor() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">Professor professor = </span><span class="s0">new </span><span class="s1">Professor()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Enter Fullname: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String fullName = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;National Code: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">nationalCode = nationalCodeReceiver(professorList)</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Professor's &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String profUsername = utils.usernameReceiver(professorList</span><span class="s0">, </span><span class="s2">&quot;Username&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Professor's Password: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String password = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Committee or non committee(Define by C or NC): &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String committee = scanner.nextLine().toUpperCase(Locale.ROOT)</span><span class="s0">;</span>
+        <span class="s1">Thread.sleep(</span><span class="s3">900</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">ArrayList&lt;Class&gt; classes = professorClassAdder(professor)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(classes.size() &gt; </span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s1">professor.edit(fullName</span><span class="s0">, </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">profUsername</span><span class="s0">, </span><span class="s1">password</span><span class="s0">, </span><span class="s1">committee</span><span class="s0">, </span><span class="s1">classes)</span><span class="s0">;</span>
+            <span class="s1">professorList.add(professor)</span><span class="s0">;</span>
+            <span class="s0">for </span><span class="s1">(Class classV : classes) {</span>
+                <span class="s1">classList.get(classV.getClassId() - </span><span class="s3">1</span><span class="s1">).setProfessor(professor)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;No classes were added yet. Add courses for the Professor later.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">professor.edit(fullName</span><span class="s0">, </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">profUsername</span><span class="s0">, </span><span class="s1">password</span><span class="s0">, </span><span class="s1">committee)</span><span class="s0">;</span>
+            <span class="s1">professorList.add(professor)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">objectAddedMessage(</span><span class="s2">&quot;Professor&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">addStudent() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Enter Fullname: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String fullName = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;National Code: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">nationalCode = nationalCodeReceiver(studentList)</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Student's &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String studentUsername = utils.usernameReceiver(studentList</span><span class="s0">, </span><span class="s2">&quot;Username&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Student's Password: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String password = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">Student student = </span><span class="s0">new </span><span class="s1">Student(fullName</span><span class="s0">, </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">studentUsername</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+        <span class="s1">studentList.add(student)</span><span class="s0">;</span>
+
+        <span class="s1">objectAddedMessage(</span><span class="s2">&quot;Student&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">addClass() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Enter Course name: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String course = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Units: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">units = utils.intReceiver()</span><span class="s0">;</span>
+        <span class="s1">Class classV = </span><span class="s0">new </span><span class="s1">Class(course</span><span class="s0">, </span><span class="s1">units)</span><span class="s0">;</span>
+        <span class="s1">classList.add(classV)</span><span class="s0">;</span>
+        <span class="s1">objectAddedMessage(</span><span class="s2">&quot;Class&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//Edit by employee Section</span>
+    <span class="s0">private void </span><span class="s1">editSection() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                What do you want to edit?: 
+                1-Employee 2-Professor 3-Student 4-Class 0-Exit&quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String opt = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(opt) {</span>
+            <span class="s0">case </span><span class="s2">&quot;1&quot;</span><span class="s1">:</span>
+                <span class="s1">editEmployee()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;2&quot;</span><span class="s1">:</span>
+                <span class="s1">editProfessor()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;3&quot;</span><span class="s1">:</span>
+                <span class="s1">editStudent()</span><span class="s0">;</span>
+            <span class="s0">case </span><span class="s2">&quot;4&quot;</span><span class="s1">:</span>
+                <span class="s1">editClass()</span><span class="s0">;</span>
+            <span class="s0">case </span><span class="s2">&quot;0&quot;</span><span class="s1">:</span>
+                <span class="s0">return;</span>
+            <span class="s0">default</span><span class="s1">:</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Choose a number between 0 and 4.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">editSection()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">editEmployee() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which employee do you want to edit?:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewEmployees()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">empId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(empId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; employeeList.get(empId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Enter the salary for the employee: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">newSalary = utils.intReceiver()</span><span class="s0">;</span>
+                <span class="s1">employeeList.get(empId - </span><span class="s3">1</span><span class="s1">).setSalary(newSalary)</span><span class="s0">;</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Employee's Salary was changed&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(empId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">break;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(employeeList.get(empId - </span><span class="s3">1</span><span class="s1">) == </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Employee does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">editProfessor() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which professor do you want to edit?Choose by ID:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewProfessors()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">profId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(profId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; professorList.get(profId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Enter new fields for the professor: </span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                        <span class="s2">&quot;Fullname: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String fullName = scanner.nextLine()</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;National Code: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">nationalCode = nationalCodeReceiver(professorList)</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Username: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String profUsername = usernameReceiver(professorList)</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Password: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String password = scanner.nextLine()</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Committee(C or NC): &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String committee = scanner.nextLine()</span><span class="s0">;</span>
+                <span class="s1">ArrayList&lt;Class&gt; classes = professorClassAdder(professorList.get(profId - </span><span class="s3">1</span><span class="s1">))</span><span class="s0">;</span>
+
+                <span class="s1">professorList.get(profId - </span><span class="s3">1</span><span class="s1">).edit(fullName</span><span class="s0">, </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">profUsername</span><span class="s0">, </span><span class="s1">password</span><span class="s0">, </span><span class="s1">committee</span><span class="s0">, </span><span class="s1">classes)</span><span class="s0">;</span>
+
+
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Professor was edited successfully.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(profId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">break;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(professorList.get(profId - </span><span class="s3">1</span><span class="s1">) == </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Professor does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">editStudent() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which student do you want to edit?Choose by ID: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewStudents()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">studentId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(studentId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; studentList.get(studentId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Enter new fields for the student: </span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                        <span class="s2">&quot;Fullname: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String fullName = scanner.nextLine()</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;National Code: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">nationalCode = nationalCodeReceiver(studentList)</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Username: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String studentUsername = usernameReceiver(studentList)</span><span class="s0">;</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Password: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String password = scanner.nextLine()</span><span class="s0">;</span>
+
+                <span class="s1">studentList.get(studentId - </span><span class="s3">1</span><span class="s1">).edit(fullName</span><span class="s0">, </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">studentUsername</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Student was edited successfully.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">break;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentList.get(studentId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Student does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">editClass() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which Class do you want to edit?Choose by ID: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewClasses()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">classId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(classId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; classList.get(classId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.print(</span><span class="s2">&quot;Enter new fields for the class: </span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                        <span class="s2">&quot;Course Name: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String courseName = scanner.nextLine()</span><span class="s0">;</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Units: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">units = utils.intReceiver()</span><span class="s0">;</span>
+                <span class="s1">classList.get(classId - </span><span class="s3">1</span><span class="s1">).edit(courseName</span><span class="s0">, </span><span class="s1">units)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//delete by employee section</span>
+    <span class="s0">private void </span><span class="s1">deleteSection() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                What do you want to delete?: 
+                1-Employee 2-Professor 3-Student 4-Course 0-Exit 
+                &quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String objToCreate = scanner.nextLine()</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(objToCreate) {</span>
+            <span class="s0">case </span><span class="s2">&quot;1&quot;</span><span class="s1">:</span>
+                <span class="s1">deleteEmployee()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;2&quot;</span><span class="s1">:</span>
+                <span class="s1">deleteProfessor()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;3&quot;</span><span class="s1">:</span>
+                <span class="s1">deleteStudent()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;4&quot;</span><span class="s1">:</span>
+                <span class="s1">deleteClass()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s2">&quot;0&quot;</span><span class="s1">:</span>
+                <span class="s0">return;</span>
+            <span class="s0">default</span><span class="s1">:</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong option!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">deleteEmployee() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which Employee do you want to delete?Choose by ID: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewEmployees()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">employeeId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(employeeId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; employeeList.get(employeeId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">employeeList.remove(employeeId - </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(employeeId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">return;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(professorList.get(employeeId - </span><span class="s3">1</span><span class="s1">) == </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Employee does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">deleteProfessor() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which Professor do you want to delete?Choose by ID: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewProfessors()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">profId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(profId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; employeeList.get(profId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">professorList.remove(profId - </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(profId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">return;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(professorList.get(profId - </span><span class="s3">1</span><span class="s1">) == </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Professor does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">deleteStudent() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which Student do you want to delete?Choose by ID: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewStudents()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">studentId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(studentId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; studentList.get(studentId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">studentList.remove(studentId - </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">return;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentList.get(studentId - </span><span class="s3">1</span><span class="s1">) == </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Student does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">deleteClass() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Which Class do you want to delete?Choose by ID: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">700</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">viewClasses()</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">classId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(classId != -</span><span class="s3">1 </span><span class="s1">&amp;&amp; classList.get(classId - </span><span class="s3">1</span><span class="s1">) != </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">classList.remove(classId - </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(classId == -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">break;</span>
+            <span class="s1">} </span><span class="s0">else if </span><span class="s1">(classList.get(classId - </span><span class="s3">1</span><span class="s1">) == </span><span class="s0">null</span><span class="s1">) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Class does not exist!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s4">//===============================END OF EMPLOYEE SECTION===============================//</span>
+
+
+    <span class="s4">//===============================START OF STUDENT SECTION===============================//</span>
+    <span class="s0">public void </span><span class="s1">studentSection(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                    Your options as a student: 
+                    1-Account Details 
+                    2-View Classes 
+                    3-Unit Choose 
+                    4-View Grades 
+                    0-Exit 
+                    &quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">String opt = scanner.nextLine()</span><span class="s0">;</span>
+            <span class="s0">switch </span><span class="s1">(opt) {</span>
+                <span class="s0">case </span><span class="s2">&quot;1&quot;</span><span class="s1">:</span>
+                    <span class="s1">viewStudentProfile(username)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;2&quot;</span><span class="s1">:</span>
+                    <span class="s1">viewClassesForStudent()</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;3&quot;</span><span class="s1">:</span>
+                    <span class="s1">unitChoose(username)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;4&quot;</span><span class="s1">:</span>
+                    <span class="s1">viewClassAndGradesByClass(username)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;0&quot;</span><span class="s1">:</span>
+                    <span class="s0">return;</span>
+                <span class="s0">default</span><span class="s1">:</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong input! try a number between 0 and 4&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewStudentProfile(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Student student : studentList) {</span>
+            <span class="s0">if </span><span class="s1">(student.getUsername().equals(username)) {</span>
+                <span class="s1">System.out.println(student)</span><span class="s0">;</span>
+                <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">unitChoose(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">int </span><span class="s1">studentIndex = findStudentIDByUsername(username)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">unitThreshold = unitThreshold(studentIndex)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">unitsPicked = unitsPicked(studentIndex)</span><span class="s0">;</span>
+        <span class="s1">ArrayList&lt;Class&gt; pickedClasses = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s0">if </span><span class="s1">(unitsPicked &lt; unitThreshold) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Choose the classes you want to pick by ID:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">viewClassesForStudent()</span><span class="s0">;</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;-1- Exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">int </span><span class="s1">classId = utils.intReceiver()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(classId != -</span><span class="s3">1</span><span class="s1">) {</span>
+                    <span class="s1">unitsPicked += classList.get(classId - </span><span class="s3">1</span><span class="s1">).getUnits()</span><span class="s0">;</span>
+                    <span class="s0">if </span><span class="s1">(unitsPicked &gt; unitThreshold) {</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;choose a class with less units.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">unitsPicked -= classList.get(classId - </span><span class="s3">1</span><span class="s1">).getUnits()</span><span class="s0">;</span>
+                    <span class="s1">} </span><span class="s0">else if </span><span class="s1">(unitsPicked == unitThreshold) {</span>
+                        <span class="s1">pickedClasses.add(classList.get(classId - </span><span class="s3">1</span><span class="s1">))</span><span class="s0">;</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;Unit added&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;You have the reached your unit selection threshold.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s1">} </span><span class="s0">else if </span><span class="s1">(pickedClasses.contains(classList.get(classId - </span><span class="s3">1</span><span class="s1">))) {</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;You have picked this class.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">unitsPicked -= classList.get(classId - </span><span class="s3">1</span><span class="s1">).getUnits()</span><span class="s0">;</span>
+                    <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentList.get(studentIndex).getClasses() != </span><span class="s0">null</span><span class="s1">) {</span>
+                        <span class="s0">if </span><span class="s1">(studentList.get(studentIndex).getClasses().contains(classList.get(classId - </span><span class="s3">1</span><span class="s1">))) {</span>
+                            <span class="s1">System.out.println(</span><span class="s2">&quot;You have picked this class already.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">unitsPicked -= classList.get(classId - </span><span class="s3">1</span><span class="s1">).getUnits()</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentList.get(studentIndex).getPassedClasses() != </span><span class="s0">null</span><span class="s1">) {</span>
+                        <span class="s0">if </span><span class="s1">(studentList.get(studentIndex).getPassedClasses().contains(classList.get(classId - </span><span class="s3">1</span><span class="s1">))) {</span>
+                            <span class="s1">System.out.println(</span><span class="s2">&quot;You have passed this course before.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                            <span class="s1">unitsPicked -= classList.get(classId - </span><span class="s3">1</span><span class="s1">).getUnits()</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                        <span class="s1">pickedClasses.add(classList.get(classId - </span><span class="s3">1</span><span class="s1">))</span><span class="s0">;</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;Unit added&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s0">break;</span>
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Your unit picking Threshold was reached!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s1">studentList.get(studentIndex).setClasses(pickedClasses)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;Units were added!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewClassAndGradesByClass(String username) {</span>
+        <span class="s0">int </span><span class="s1">index = findStudentIDByUsername(username)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(!isNull(studentList.get(index).getPassedClasses()) &amp;&amp; studentList.get(index).getPassedClasses().size() &gt; </span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">i &lt; studentList.get(index).getPassedClasses().size()</span><span class="s0">; </span><span class="s1">i++) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Course: &quot; </span><span class="s1">+ studentList.get(index).getPassedClasses().get(i) + </span><span class="s2">&quot;   Grade: &quot; </span><span class="s1">+ studentList.get(index).getGrades().get(i))</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">System.out.println(</span><span class="s2">&quot;No grade is added yet.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//===============================END OF STUDENT SECTION===============================//</span>
+
+
+    <span class="s4">//===============================START OF PROFESSOR SECTION===============================//</span>
+
+    <span class="s0">private void </span><span class="s1">professorSection(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;&quot;&quot; 
+                    Your Options: 
+                    1-Account Details 
+                    2-Insert Grades 
+                    3-View Salary Receipt 
+                    0-Exit 
+                    &quot;&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">String opt = scanner.nextLine()</span><span class="s0">;</span>
+            <span class="s0">switch </span><span class="s1">(opt) {</span>
+                <span class="s0">case </span><span class="s2">&quot;1&quot;</span><span class="s1">:</span>
+                    <span class="s1">viewProfessorAccount(username)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;2&quot;</span><span class="s1">:</span>
+                    <span class="s1">insertGrades(username)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;3&quot;</span><span class="s1">:</span>
+                    <span class="s1">professorSalary(username)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;4&quot;</span><span class="s1">:</span>
+                    <span class="s1">System.out.println(employeeSalary(username))</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+                <span class="s0">case </span><span class="s2">&quot;0&quot;</span><span class="s1">:</span>
+                    <span class="s0">return;</span>
+                <span class="s0">default</span><span class="s1">:</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong input,try 1,2,0: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewProfessorAccount(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Professor professor : professorList) {</span>
+            <span class="s0">if </span><span class="s1">(professor.getUsername().equals(username)) {</span>
+                <span class="s1">System.out.println(professor)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">insertGrades(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">int </span><span class="s1">profIndex = findProfessorIDByUsername(username)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(Class classV : professorList.get(profIndex).getProfClasses()) {</span>
+            <span class="s1">System.out.println(classV)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Select the class ID you want to insert grades for: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">classID = utils.intReceiver()</span><span class="s0">;</span>
+        <span class="s1">Class temp = classList.get(classID - </span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;Now select the Student ID you want to insert grades for: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(Student student : studentList) {</span>
+            <span class="s0">if </span><span class="s1">(!isNull(student.getClasses())) {</span>
+                <span class="s0">if </span><span class="s1">(student.getClasses().contains(temp)) {</span>
+                    <span class="s1">System.out.println(student)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">int </span><span class="s1">studentID = utils.intReceiver()</span><span class="s0">;</span>
+        <span class="s1">System.out.print(</span><span class="s2">&quot;Grade: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">double </span><span class="s1">grade = utils.doubleReceiver()</span><span class="s0">;</span>
+        <span class="s1">studentList.get(studentID - </span><span class="s3">1</span><span class="s1">).setGrades(classID</span><span class="s0">, </span><span class="s1">grade)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">professorSalary(String username) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Professor professor : professorList) {</span>
+            <span class="s0">if </span><span class="s1">(professor.getUsername().equals(username)) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Your salary is: &quot; </span><span class="s1">+ professor.getSalary())</span><span class="s0">;</span>
+                <span class="s1">Thread.sleep(</span><span class="s3">1000</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//===============================END OF PROFESSOR SECTION===============================//</span>
+
+    <span class="s0">private </span><span class="s1">String viewGrades(String username) {</span>
+        <span class="s0">int </span><span class="s1">studentIndex = findStudentIDByUsername(username)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(studentList.get(studentIndex).getGrades() != </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">return </span><span class="s1">studentList.get(studentIndex).getGrades().toString()</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else return null;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewClasses() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Class classIn : classList) {</span>
+            <span class="s1">System.out.println(classIn)</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">500</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewClassesForStudent() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Class classIn : classList) {</span>
+            <span class="s0">if </span><span class="s1">(!isNull(classIn.getProfessor())) {</span>
+                <span class="s1">System.out.println(classIn)</span><span class="s0">;</span>
+                <span class="s1">Thread.sleep(</span><span class="s3">500</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewEmployees() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Employee employee : employeeList) {</span>
+            <span class="s1">System.out.println(employee.toString())</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">500</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewProfessors() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Professor professor : professorList) {</span>
+            <span class="s1">System.out.println(professor.toString())</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">500</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">viewStudents() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">for </span><span class="s1">(Student student : studentList) {</span>
+            <span class="s1">System.out.println(student.toString())</span><span class="s0">;</span>
+            <span class="s1">Thread.sleep(</span><span class="s3">500</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private int </span><span class="s1">findStudentIDByUsername(String username) {</span>
+        <span class="s0">for </span><span class="s1">(Student student : studentList) {</span>
+            <span class="s0">if </span><span class="s1">(student.getUsername().equals(username)) {</span>
+                <span class="s0">return </span><span class="s1">studentList.indexOf(student)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else return </span><span class="s1">-</span><span class="s3">1</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">-</span><span class="s3">1</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private int </span><span class="s1">findProfessorIDByUsername(String username) {</span>
+        <span class="s0">for </span><span class="s1">(Professor professor : professorList) {</span>
+            <span class="s0">if </span><span class="s1">(professor.getUsername().equals(username)) {</span>
+                <span class="s0">return </span><span class="s1">professorList.indexOf(professor)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else return </span><span class="s1">-</span><span class="s3">1</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">-</span><span class="s3">1</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private int </span><span class="s1">unitsPicked(</span><span class="s0">int </span><span class="s1">index) {</span>
+        <span class="s0">int </span><span class="s1">unitsPicked = </span><span class="s3">0</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(studentList.get(index).getClasses() != </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s0">for </span><span class="s1">(Class classes : studentList.get(index).getClasses()) {</span>
+                <span class="s1">unitsPicked += classes.getUnits()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">unitsPicked</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">ArrayList&lt;Class&gt; professorClassAdder(Professor professor) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">ArrayList&lt;Class&gt; tempClasses = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;Choose the class ID to add for professor: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Thread.sleep(</span><span class="s3">800</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">viewClasses()</span><span class="s0">;</span>
+        <span class="s1">System.out.println(</span><span class="s2">&quot;-1- exit&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s0">int </span><span class="s1">classId = utils.intReceiver()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(classId != -</span><span class="s3">1</span><span class="s1">) {</span>
+                <span class="s0">if </span><span class="s1">(classExists(classId) &amp;&amp; !tempClasses.contains(classList.get(classId - </span><span class="s3">1</span><span class="s1">)) &amp;&amp; isNull(classList.get(classId - </span><span class="s3">1</span><span class="s1">).getProfessor())) {</span>
+                    <span class="s1">tempClasses.add(classList.get(classId - </span><span class="s3">1</span><span class="s1">))</span><span class="s0">;</span>
+                    <span class="s1">classList.get(classId - </span><span class="s3">1</span><span class="s1">).setProfessor(professor)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">System.out.println(</span><span class="s2">&quot;Class ID does not exist or has already a professor!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">else break;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">tempClasses</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s0">private boolean </span><span class="s1">classExists(</span><span class="s0">int </span><span class="s1">classId) {</span>
+        <span class="s0">for </span><span class="s1">(Class classV : classList) {</span>
+            <span class="s0">if </span><span class="s1">(classV.getClassId() == classId) {</span>
+                <span class="s0">return true;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return false;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private int </span><span class="s1">unitThreshold(</span><span class="s0">int </span><span class="s1">index) {</span>
+        <span class="s0">if </span><span class="s1">(studentList.get(index).getGradesFinal() &gt;= </span><span class="s3">18</span><span class="s1">) {</span>
+            <span class="s0">return </span><span class="s3">24</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else if </span><span class="s1">(studentList.get(index).getGradesFinal() &lt; </span><span class="s3">18</span><span class="s1">) {</span>
+            <span class="s0">return </span><span class="s3">20</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s3">20</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">authenticate(String username</span><span class="s0">, </span><span class="s1">String password</span><span class="s0">, </span><span class="s1">ArrayList&lt;Person&gt; list) {</span>
+        <span class="s0">for </span><span class="s1">(Person person : list) {</span>
+            <span class="s0">if </span><span class="s1">(person.getUsername().equals(username)) {</span>
+                <span class="s1">String validUser = person.getUsername()</span><span class="s0">;</span>
+                <span class="s1">String validPass = person.getPassword()</span><span class="s0">;</span>
+                <span class="s0">return </span><span class="s1">validUser.equals(username) &amp;&amp; validPass.equals(password)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return false;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private int </span><span class="s1">nationalCodeReceiver(ArrayList list) {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s0">try </span><span class="s1">{</span>
+                <span class="s0">int </span><span class="s1">temp = utils.intReceiver()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(!ifNCodeExists(temp</span><span class="s0">, </span><span class="s1">list)) {</span>
+                    <span class="s0">return </span><span class="s1">temp</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">System.out.println(</span><span class="s2">&quot;This National code already exists!</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                            <span class="s2">&quot;Try another one that does not exist:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(NumberFormatException e) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Enter a Number!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">nationalCodeReceiver(list)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(NullPointerException e) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Enter Something!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">nationalCodeReceiver(list)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">String usernameReceiver(ArrayList list) {</span>
+        <span class="s0">while </span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+            <span class="s0">try </span><span class="s1">{</span>
+                <span class="s1">String temp = scanner.nextLine()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(!ifUsernameExists(temp</span><span class="s0">, </span><span class="s1">list)) {</span>
+                    <span class="s0">return </span><span class="s1">temp</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">System.out.print(</span><span class="s2">&quot;This Username already exists!</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                            <span class="s2">&quot;Try another one that does not exist: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(NullPointerException e) {</span>
+                <span class="s1">System.out.println(</span><span class="s2">&quot;Enter something!&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">usernameReceiver(list)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">ifNCodeExists(</span><span class="s0">int </span><span class="s1">nationalCode</span><span class="s0">, </span><span class="s1">ArrayList list) {</span>
+        <span class="s0">for </span><span class="s1">(Object person : list) {</span>
+            <span class="s0">if </span><span class="s1">(((Person) person).getNationalCode() == nationalCode) {</span>
+                <span class="s0">return true;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return false;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">ifUsernameExists(String username</span><span class="s0">, </span><span class="s1">ArrayList list) {</span>
+        <span class="s0">for </span><span class="s1">(Object person : list) {</span>
+            <span class="s0">if </span><span class="s1">(((Person) person).getUsername().equals(username)) {</span>
+                <span class="s0">return true;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return false;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">objectAddedMessage(String object) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">String message = object + </span><span class="s2">&quot; was added.&quot;</span><span class="s0">;</span>
+        <span class="s1">Thread.sleep(</span><span class="s3">900</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">utils.printGreen(message)</span><span class="s0">;</span>
+        <span class="s1">Thread.sleep(</span><span class="s3">900</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Main.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.University</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.Locale</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Scanner</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">Main {</span>
+    <span class="s0">public static </span><span class="s1">Scanner scanner = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span>
+    <span class="s0">public static </span><span class="s1">University uni = </span><span class="s0">new </span><span class="s1">University()</span><span class="s0">;</span>
+
+
+    <span class="s0">public static void </span><span class="s1">main(String[] args) </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s1">entry()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public static void </span><span class="s1">entry() </span><span class="s0">throws </span><span class="s1">InterruptedException {</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Welcome to University App!</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                <span class="s2">&quot;Enter L/l to login or E/e to exit: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">while</span><span class="s1">(</span><span class="s0">true</span><span class="s1">) {</span>
+
+                <span class="s1">String opt = scanner.nextLine().toUpperCase(Locale.ROOT)</span><span class="s0">;</span>
+                <span class="s0">switch </span><span class="s1">(opt) {</span>
+                    <span class="s0">case </span><span class="s2">&quot;L&quot; </span><span class="s1">-&gt; {</span>
+                        <span class="s1">uni.loginRole()</span><span class="s0">;</span>
+                        <span class="s0">return;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">case </span><span class="s2">&quot;E&quot; </span><span class="s1">-&gt; System.exit(</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">default </span><span class="s1">-&gt; {</span>
+                        <span class="s1">System.out.println(</span><span class="s2">&quot;Wrong input.</span><span class="s0">\n</span><span class="s2">&quot; </span><span class="s1">+</span>
+                                <span class="s2">&quot;Choose L/l or E/e:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">}</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(NullPointerException e) {</span>
+            <span class="s1">System.out.println(</span><span class="s2">&quot;Empty String not accepted.&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
