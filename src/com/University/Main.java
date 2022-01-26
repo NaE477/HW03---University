@@ -13,26 +13,23 @@ public class Main {
     }
 
     public static void entry() throws InterruptedException {
-        try {
-            System.out.println("Welcome to University App!\n" +
-                "Enter L/l to login or E/e to exit: ");
-            while(true) {
-
+        label:
+        while (true) {
+            try {
+                System.out.println("Welcome to University App!\n" +
+                        "Enter L/l to login or E/e to exit: ");
                 String opt = scanner.nextLine().toUpperCase(Locale.ROOT);
                 switch (opt) {
-                    case "L" -> {
-                        uni.loginRole();
-                        return;
+                    case "L" -> uni.loginRole();
+                    case "E" -> {
+                        break label;
                     }
-                    case "E" -> System.exit(0);
-                    default -> {
-                        System.out.println("Wrong input.\n" +
-                                "Choose L/l or E/e:");
-                    }
+                    default -> System.out.println("Wrong input.\n" +
+                            "Choose L/l or E/e:");
                 }
+            } catch (NullPointerException e) {
+                System.out.println("Empty String not accepted.");
             }
-        } catch (NullPointerException e) {
-            System.out.println("Empty String not accepted.");
         }
     }
 }

@@ -26,6 +26,7 @@ public class University {
     }
 
     public void loginRole() throws InterruptedException {
+        label:
         while (true) {
             System.out.println("""
                     Roles in the app include:
@@ -44,7 +45,9 @@ public class University {
                 case "3" -> {
                     login(studentList);
                 }
-                case "0" -> Main.entry();
+                case "0" -> {
+                    break label;
+                }
                 default -> {
                     System.out.println("Try a number between 1-3");
                     Thread.sleep(700);
@@ -121,29 +124,32 @@ public class University {
     }
 
     private void createSection() throws InterruptedException {
-        System.out.println("""
-                What do you want to create?:
-                1-Employee 2-Professor 3-Student 4-Course 0-Exit
-                """);
-        String objToCreate = scanner.nextLine();
-        switch (objToCreate) {
-            case "1":
-                addEmployee();
-                break;
-            case "2":
-                addProfessor();
-                break;
-            case "3":
-                addStudent();
-                break;
-            case "4":
-                addClass();
-                break;
-            case "0":
-                return;
-            default:
-                System.out.println("Wrong option!");
-                break;
+        label:
+        while (true) {
+            System.out.println("""
+                    What do you want to create?:
+                    1-Employee 2-Professor 3-Student 4-Course 0-Exit
+                    """);
+            String objToCreate = scanner.nextLine();
+            switch (objToCreate) {
+                case "1":
+                    addEmployee();
+                    break;
+                case "2":
+                    addProfessor();
+                    break;
+                case "3":
+                    addStudent();
+                    break;
+                case "4":
+                    addClass();
+                    break;
+                case "0":
+                    break label;
+                default:
+                    System.out.println("Wrong option!");
+                    break;
+            }
         }
     }
 
@@ -228,27 +234,31 @@ public class University {
 
     //Edit by employee Section
     private void editSection() throws InterruptedException {
-        System.out.println("""
-                What do you want to edit?:
-                1-Employee 2-Professor 3-Student 4-Class 0-Exit""");
-        String opt = scanner.nextLine();
-        switch (opt) {
-            case "1":
-                editEmployee();
-                break;
-            case "2":
-                editProfessor();
-                break;
-            case "3":
-                editStudent();
-            case "4":
-                editClass();
-            case "0":
-                return;
-            default:
-                System.out.println("Choose a number between 0 and 4.");
+        label:
+        while(true) {
+            System.out.println("""
+                    What do you want to edit?:
+                    1-Employee 2-Professor 3-Student 4-Class 0-Exit""");
+            String opt = scanner.nextLine();
+            switch (opt) {
+                case "1":
+                    editEmployee();
+                    break;
+                case "2":
+                    editProfessor();
+                    break;
+                case "3":
+                    editStudent();
+                    break;
+                case "4":
+                    editClass();
+                    break;
+                case "0":
+                    break label;
+                default:
+                    System.out.println("Choose a number between 0 and 4.");
+            }
         }
-        editSection();
     }
 
     private void editEmployee() throws InterruptedException {
@@ -258,15 +268,19 @@ public class University {
             viewEmployees();
             System.out.println("-1- Exit");
             int empId = utils.intReceiver();
-            if (empId != -1 && employeeList.get(empId - 1) != null) {
-                System.out.println("Enter the salary for the employee: ");
-                int newSalary = utils.intReceiver();
-                employeeList.get(empId - 1).setSalary(newSalary);
-                System.out.println("Employee's Salary was changed");
-            } else if (empId == -1) {
-                break;
-            } else if (employeeList.get(empId - 1) == null) {
-                System.out.println("Employee does not exist!");
+            try {
+                if (empId != -1 && employeeList.get(empId - 1) != null) {
+                    System.out.println("Enter the salary for the employee: ");
+                    int newSalary = utils.intReceiver();
+                    employeeList.get(empId - 1).setSalary(newSalary);
+                    System.out.println("Employee's Salary was changed");
+                } else if (empId == -1) {
+                    break;
+                } else if (employeeList.get(empId - 1) == null) {
+                    System.out.println("Employee IS deleted!");
+                }
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("ID is out of bounds.");
             }
         }
     }
@@ -278,30 +292,34 @@ public class University {
             viewProfessors();
             System.out.println("-1- Exit");
             int profId = utils.intReceiver();
-            if (profId != -1 && professorList.get(profId - 1) != null) {
+            try {
+                if (profId != -1 && professorList.get(profId - 1) != null) {
 
-                System.out.print("Enter new fields for the professor: \n" +
-                        "Fullname: ");
-                String fullName = scanner.nextLine();
-                System.out.print("National Code: ");
-                int nationalCode = nationalCodeReceiver(professorList);
-                System.out.print("Username: ");
-                String profUsername = usernameReceiver(professorList);
-                System.out.print("Password: ");
-                String password = scanner.nextLine();
-                System.out.print("Committee(C or NC): ");
-                String committee = scanner.nextLine();
-                ArrayList<Class> classes = professorClassAdder(professorList.get(profId - 1));
+                    System.out.print("Enter new fields for the professor: \n" +
+                            "Fullname: ");
+                    String fullName = scanner.nextLine();
+                    System.out.print("National Code: ");
+                    int nationalCode = nationalCodeReceiver(professorList);
+                    System.out.print("Username: ");
+                    String profUsername = usernameReceiver(professorList);
+                    System.out.print("Password: ");
+                    String password = scanner.nextLine();
+                    System.out.print("Committee(C or NC): ");
+                    String committee = scanner.nextLine();
+                    ArrayList<Class> classes = professorClassAdder(professorList.get(profId - 1));
 
-                professorList.get(profId - 1).edit(fullName, nationalCode, profUsername, password, committee, classes);
+                    professorList.get(profId - 1).edit(fullName, nationalCode, profUsername, password, committee, classes);
 
 
-                System.out.println("-----------------------\nProfessor was edited successfully.\n-------------------");
-                Thread.sleep(1000);
-            } else if (profId == -1) {
-                break;
-            } else if (professorList.get(profId - 1) == null) {
-                System.out.println("Professor does not exist!");
+                    System.out.println("-----------------------\nProfessor was edited successfully.\n-------------------");
+                    Thread.sleep(1000);
+                } else if (profId == -1) {
+                    break;
+                } else if (professorList.get(profId - 1) == null) {
+                    System.out.println("Professor does not exist!");
+                }
+            } catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("ID is out of bounds.");
             }
         }
     }
@@ -313,25 +331,29 @@ public class University {
             viewStudents();
             System.out.println("-1- Exit");
             int studentId = utils.intReceiver();
-            if (studentId != -1 && studentList.get(studentId - 1) != null) {
+            try {
+                if (studentId != -1 && studentList.get(studentId - 1) != null) {
 
-                System.out.print("Enter new fields for the student: \n" +
-                        "Fullname: ");
-                String fullName = scanner.nextLine();
-                System.out.print("National Code: ");
-                int nationalCode = nationalCodeReceiver(studentList);
-                System.out.print("Username: ");
-                String studentUsername = usernameReceiver(studentList);
-                System.out.print("Password: ");
-                String password = scanner.nextLine();
+                    System.out.print("Enter new fields for the student: \n" +
+                            "Fullname: ");
+                    String fullName = scanner.nextLine();
+                    System.out.print("National Code: ");
+                    int nationalCode = nationalCodeReceiver(studentList);
+                    System.out.print("Username: ");
+                    String studentUsername = usernameReceiver(studentList);
+                    System.out.print("Password: ");
+                    String password = scanner.nextLine();
 
-                studentList.get(studentId - 1).edit(fullName, nationalCode, studentUsername, password);
+                    studentList.get(studentId - 1).edit(fullName, nationalCode, studentUsername, password);
 
-                System.out.println("Student was edited successfully.");
-            } else if (studentId == -1) {
-                break;
-            } else if (studentList.get(studentId - 1) != null) {
-                System.out.println("Student does not exist!");
+                    System.out.println("Student was edited successfully.");
+                } else if (studentId == -1) {
+                    break;
+                } else if (studentList.get(studentId - 1) != null) {
+                    System.out.println("Student is deleted.");
+                }
+            } catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("ID entered is out of bound.");
             }
         }
     }
@@ -343,13 +365,23 @@ public class University {
             viewClasses();
             System.out.println("-1- Exit");
             int classId = utils.intReceiver();
-            if (classId != -1 && classList.get(classId - 1) != null) {
-                System.out.print("Enter new fields for the class: \n" +
-                        "Course Name: ");
-                String courseName = scanner.nextLine();
-                System.out.println("Units: ");
-                int units = utils.intReceiver();
-                classList.get(classId - 1).edit(courseName, units);
+            try {
+                if (classId != -1 && classList.get(classId - 1) != null) {
+                    System.out.print("Enter new fields for the class: \n" +
+                            "Course Name: ");
+                    String courseName = scanner.nextLine();
+                    System.out.println("Units: ");
+                    int units = utils.intReceiver();
+                    classList.get(classId - 1).edit(courseName, units);
+                }
+                else if(classId == -1){
+                    break;
+                }
+                else if(classList.get(classId - 1) == null){
+                    System.out.println("Class deleted.");
+                }
+            } catch(IndexOutOfBoundsException e){
+                System.out.println("ID is out of bounds.");
             }
         }
     }
@@ -360,8 +392,8 @@ public class University {
                 What do you want to delete?:
                 1-Employee 2-Professor 3-Student 4-Course 0-Exit
                 """);
-        String objToCreate = scanner.nextLine();
-        switch (objToCreate) {
+        String objToDelete = scanner.nextLine();
+        switch (objToDelete) {
             case "1":
                 deleteEmployee();
                 break;
@@ -389,12 +421,16 @@ public class University {
             viewEmployees();
             System.out.println("-1- Exit");
             int employeeId = utils.intReceiver();
-            if (employeeId != -1 && employeeList.get(employeeId - 1) != null) {
-                employeeList.remove(employeeId - 1);
-            } else if (employeeId == -1) {
-                return;
-            } else if (professorList.get(employeeId - 1) == null) {
-                System.out.println("Employee does not exist!");
+            try {
+                if (employeeId != -1 && employeeList.get(employeeId - 1) != null) {
+                    employeeList.remove(employeeId - 1);
+                } else if (employeeId == -1) {
+                    break;
+                } else if (professorList.get(employeeId - 1) == null) {
+                    System.out.println("Employee already deleted!");
+                }
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("ID out of bounds.");
             }
         }
     }
@@ -406,12 +442,16 @@ public class University {
             viewProfessors();
             System.out.println("-1- Exit");
             int profId = utils.intReceiver();
-            if (profId != -1 && employeeList.get(profId - 1) != null) {
-                professorList.remove(profId - 1);
-            } else if (profId == -1) {
-                return;
-            } else if (professorList.get(profId - 1) == null) {
-                System.out.println("Professor does not exist!");
+            try {
+                if (profId != -1 && employeeList.get(profId - 1) != null) {
+                    professorList.remove(profId - 1);
+                } else if (profId == -1) {
+                    return;
+                } else if (professorList.get(profId - 1) == null) {
+                    System.out.println("Professor already deleted.");
+                }
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("ID out of bound.");
             }
         }
     }
@@ -423,12 +463,16 @@ public class University {
             viewStudents();
             System.out.println("-1- Exit");
             int studentId = utils.intReceiver();
-            if (studentId != -1 && studentList.get(studentId - 1) != null) {
-                studentList.remove(studentId - 1);
-            } else if (studentId == -1) {
-                return;
-            } else if (studentList.get(studentId - 1) == null) {
-                System.out.println("Student does not exist!");
+            try {
+                if (studentId != -1 && studentList.get(studentId - 1) != null) {
+                    studentList.remove(studentId - 1);
+                } else if (studentId == -1) {
+                    return;
+                } else if (studentList.get(studentId - 1) == null) {
+                    System.out.println("Student Already deleted.");
+                }
+            } catch (ArrayIndexOutOfBoundsException e){
+                System.out.println("ID out of bounds.");
             }
         }
     }
@@ -440,12 +484,16 @@ public class University {
             viewClasses();
             System.out.println("-1- Exit");
             int classId = utils.intReceiver();
-            if (classId != -1 && classList.get(classId - 1) != null) {
-                classList.remove(classId - 1);
-            } else if (classId == -1) {
-                break;
-            } else if (classList.get(classId - 1) == null) {
-                System.out.println("Class does not exist!");
+            try {
+                if (classId != -1 && classList.get(classId - 1) != null) {
+                    classList.remove(classId - 1);
+                } else if (classId == -1) {
+                    break;
+                } else if (classList.get(classId - 1) == null) {
+                    System.out.println("Class already deleted.");
+                }
+            } catch (ArrayIndexOutOfBoundsException e)  {
+                System.out.println("ID out of bounds.");
             }
         }
     }
@@ -454,6 +502,7 @@ public class University {
 
     //===============================START OF STUDENT SECTION===============================//
     public void studentSection(String username) throws InterruptedException {
+        label:
         while (true) {
             System.out.println("""
                     Your options as a student:
@@ -478,7 +527,7 @@ public class University {
                     viewClassAndGradesByClass(username);
                     break;
                 case "0":
-                    return;
+                    break label;
                 default:
                     System.out.println("Wrong input! try a number between 0 and 4");
                     Thread.sleep(1000);
@@ -506,37 +555,41 @@ public class University {
                 viewClassesForStudent();
                 System.out.println("-1- Exit");
                 int classId = utils.intReceiver();
-                if (classId != -1) {
-                    unitsPicked += classList.get(classId - 1).getUnits();
-                    if (unitsPicked > unitThreshold) {
-                        System.out.println("choose a class with less units.");
-                        Thread.sleep(1000);
-                        unitsPicked -= classList.get(classId - 1).getUnits();
-                    } else if (unitsPicked == unitThreshold) {
-                        pickedClasses.add(classList.get(classId - 1));
-                        System.out.println("Unit added");
-                        System.out.println("You have the reached your unit selection threshold.");
-                        break;
-                    } else if (pickedClasses.contains(classList.get(classId - 1))) {
-                        System.out.println("You have picked this class.");
-                        unitsPicked -= classList.get(classId - 1).getUnits();
-                    } else if (studentList.get(studentIndex).getClasses() != null) {
-                        if (studentList.get(studentIndex).getClasses().contains(classList.get(classId - 1))) {
-                            System.out.println("You have picked this class already.");
+                try {
+                    if (classId != -1) {
+                        unitsPicked += classList.get(classId - 1).getUnits();
+                        if (unitsPicked > unitThreshold) {
+                            System.out.println("choose a class with less units.");
+                            Thread.sleep(1000);
                             unitsPicked -= classList.get(classId - 1).getUnits();
-                        }
-                    } else if (studentList.get(studentIndex).getPassedClasses() != null) {
-                        if (studentList.get(studentIndex).getPassedClasses().contains(classList.get(classId - 1))) {
-                            System.out.println("You have passed this course before.");
+                        } else if (unitsPicked == unitThreshold) {
+                            pickedClasses.add(classList.get(classId - 1));
+                            System.out.println("Unit added");
+                            System.out.println("You have the reached your unit selection threshold.");
+                            break;
+                        } else if (pickedClasses.contains(classList.get(classId - 1))) {
+                            System.out.println("You have picked this class.");
                             unitsPicked -= classList.get(classId - 1).getUnits();
+                        } else if (studentList.get(studentIndex).getClasses() != null) {
+                            if (studentList.get(studentIndex).getClasses().contains(classList.get(classId - 1))) {
+                                System.out.println("You have picked this class already.");
+                                unitsPicked -= classList.get(classId - 1).getUnits();
+                            }
+                        } else if (studentList.get(studentIndex).getPassedClasses() != null) {
+                            if (studentList.get(studentIndex).getPassedClasses().contains(classList.get(classId - 1))) {
+                                System.out.println("You have passed this course before.");
+                                unitsPicked -= classList.get(classId - 1).getUnits();
+                            }
+                        } else {
+                            pickedClasses.add(classList.get(classId - 1));
+                            System.out.println("Unit added");
+                            Thread.sleep(1000);
                         }
                     } else {
-                        pickedClasses.add(classList.get(classId - 1));
-                        System.out.println("Unit added");
-                        Thread.sleep(1000);
+                        break;
                     }
-                } else {
-                    break;
+                } catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Class ID out of bounds.");
                 }
             } else {
                 System.out.println("Your unit picking Threshold was reached!");
@@ -610,20 +663,24 @@ public class University {
         }
         System.out.print("Select the class ID you want to insert grades for: ");
         Thread.sleep(1000);
-        int classID = utils.intReceiver();
-        Class temp = classList.get(classID - 1);
-        System.out.println("Now select the Student ID you want to insert grades for: ");
-        for (Student student : studentList) {
-            if (!isNull(student.getClasses())) {
-                if (student.getClasses().contains(temp)) {
-                    System.out.println(student);
+        try {
+            int classID = utils.intReceiver();
+            Class temp = classList.get(classID - 1);
+            System.out.println("Now select the Student ID you want to insert grades for: ");
+            for (Student student : studentList) {
+                if (!isNull(student.getClasses())) {
+                    if (student.getClasses().contains(temp)) {
+                        System.out.println(student);
+                    }
                 }
             }
+            int studentID = utils.intReceiver();
+            System.out.print("Grade: ");
+            double grade = utils.doubleReceiver();
+            studentList.get(studentID - 1).setGrades(classID, grade);
+        } catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("ID out of bounds.");
         }
-        int studentID = utils.intReceiver();
-        System.out.print("Grade: ");
-        double grade = utils.doubleReceiver();
-        studentList.get(studentID - 1).setGrades(classID, grade);
     }
 
     private void professorSalary(String username) throws InterruptedException {
@@ -715,16 +772,21 @@ public class University {
         Thread.sleep(800);
         viewClasses();
         System.out.println("-1- exit");
-        while (true) {
-            int classId = utils.intReceiver();
-            if (classId != -1) {
-                if (classExists(classId) && !tempClasses.contains(classList.get(classId - 1)) && isNull(classList.get(classId - 1).getProfessor())) {
-                    tempClasses.add(classList.get(classId - 1));
-                    classList.get(classId - 1).setProfessor(professor);
-                } else System.out.println("Class ID does not exist or has already a professor!");
-            } else break;
+        try {
+            while (true) {
+                int classId = utils.intReceiver();
+                if (classId != -1) {
+                    if (classExists(classId) && !tempClasses.contains(classList.get(classId - 1)) && isNull(classList.get(classId - 1).getProfessor())) {
+                        tempClasses.add(classList.get(classId - 1));
+                        classList.get(classId - 1).setProfessor(professor);
+                    } else System.out.println("Class ID does not exist or has already a professor!");
+                } else break;
+            }
+            return tempClasses;
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("ID out of bounds.");
+            return new ArrayList<>();
         }
-        return tempClasses;
     }
 
 
@@ -769,10 +831,8 @@ public class University {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Enter a Number!");
-                nationalCodeReceiver(list);
             } catch (NullPointerException e) {
                 System.out.println("Enter Something!");
-                nationalCodeReceiver(list);
             }
         }
     }
@@ -789,7 +849,6 @@ public class University {
                 }
             } catch (NullPointerException e) {
                 System.out.println("Enter something!");
-                usernameReceiver(list);
             }
         }
     }

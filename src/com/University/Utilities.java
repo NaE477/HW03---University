@@ -9,50 +9,41 @@ public class Utilities {
     Scanner scanner = new Scanner(System.in);
 
     public String usernameReceiver(ArrayList target, String tag){
-        System.out.print(tag + ": ");
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        String output = null;
         while(true){
-            if(checkExistence(target,input)){
-                System.out.println("This " + tag + " Already Exists! Try another one: ");
-                usernameReceiver(target,tag);
-            }
+        System.out.print(tag + ": ");
+        String input = scanner.nextLine();
+            if(!checkExistence(target,input)){
+                return input;
+                }
             else {
-                output = input;
+                System.out.println("This " + tag + " Already Exists! Try another one: ");
             }
-            break;
         }
-        return output;
     }
 
     public boolean checkExistence(ArrayList<Person> target,String username){
-        boolean flag = false;
         for (Person person : target) {
                 if (person.getUsername().equals(username)) {
-                    flag = true;
-                    break;
+                    return true;
             }
         }
-        return flag;
+        return false;
     }
 
     public String regexAdder(String regex,String tag){
+        while(true){
         System.out.print(tag + ": ");
         Scanner scanner = new Scanner(System.in);
         String output = null;
         String input = scanner.nextLine();
-        while(true){
             if(checkRegex(input,regex)){
-                output = input;
+                return input;
             }
             else{
                 System.out.println("Wrong " + tag + " Format. Enter a Correct " + tag + " Format:");
-                regexAdder(regex,tag);
             }
-            break;
         }
-        return output;
     }
 
     public boolean checkRegex(String input, String regexPattern){
@@ -60,26 +51,22 @@ public class Utilities {
     }
 
     public int intReceiver(){
-        try{
-            int output = Integer.parseInt(scanner.nextLine());
-            return output;
+        while(true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("You should enter a number here:");
+            }
         }
-        catch (NumberFormatException e) {
-            System.out.println("You should enter a number here:");
-            intReceiver();
-        }
-        return 0;
     }
     public Double doubleReceiver(){
-        try{
-            double output = Double.parseDouble(scanner.nextLine());
-            return output;
+        while (true) {
+            try {
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("You should enter a number here:");
+            }
         }
-        catch (NumberFormatException e) {
-            System.out.println("You should enter a number here:");
-            doubleReceiver();
-        }
-        return 0.0;
     }
 
     void printRed(String input){
